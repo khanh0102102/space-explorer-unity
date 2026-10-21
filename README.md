@@ -34,7 +34,7 @@ Trong Unity Project, tạo hoặc mở thư mục:
 
 **Assets/Art/KenneySpaceShooter/**
 
-Từ thư mục tải về **C:\Users\hodac\Downloads\kenney_space-shooter-remastered**, **chép các thư mục Backgrounds, PNG, Bonus và file license.txt vào bên trong Assets/Art/KenneySpaceShooter/**. Giữ nguyên cây thư mục, ví dụ:
+Khi chạy công cụ tạo dự án, nó sẽ tự động chép các thư mục **Backgrounds, PNG, Bonus** và file **license.txt** từ **C:\Users\hodac\Downloads\kenney_space-shooter-remastered** vào **Assets/Art/KenneySpaceShooter/** nếu tìm thấy đường dẫn đó. Nếu bạn chuyển dự án sang máy khác hoặc asset nằm ở vị trí khác, hãy chép thủ công các thư mục này và giữ nguyên cây thư mục, ví dụ:
 
     Assets/
     └── Art/
