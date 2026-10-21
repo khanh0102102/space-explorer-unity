@@ -14,6 +14,7 @@ Dự án game bắn phi thuyền 2D phục vụ bài thực hành Unity: GameObj
 - **HUD:** cập nhật điểm ngay khi nhặt sao hoặc bắn trúng thiên thạch.
 - **Màn kết thúc:** hiển thị điểm lượt chơi, kỷ lục đã lưu, chơi lại, về menu hoặc thoát.
 - **Âm thanh:** dùng âm thanh Kenney nếu có asset; game vẫn có thể chạy với hình dự phòng nếu chưa chép bộ asset.
+- **Chuyển cảnh mượt:** lớp phủ tối mờ dần trước/sau khi tải scene, kể cả khi game đang tạm dừng để xử lý Game Over.
 - **Scene và Build Settings:** tự tạo MainMenu, Gameplay, EndGame và thêm vào danh sách scene build.
 
 ## 2. Yêu cầu
@@ -85,7 +86,8 @@ Các mục **Tools → Space Explorer → Mở scene Menu** và **Mở scene Gam
     ├── Editor/
     │   └── SpaceExplorerProjectSetup.cs  # Công cụ tạo scene/prefab/UI
     ├── Scripts/
-    │   ├── Core/GameManager.cs           # Điểm số, kết thúc và chuyển scene
+    │   ├── Core/GameManager.cs           # Điểm số và kết thúc lượt chơi
+    │   ├── Core/SceneTransition.cs      # Hiệu ứng fade khi chuyển scene
     │   ├── Player/PlayerController.cs    # Điều khiển tàu và bắn laser
     │   ├── Gameplay/
     │   │   ├── AsteroidMotion.cs         # Di chuyển, quay, va chạm thiên thạch
