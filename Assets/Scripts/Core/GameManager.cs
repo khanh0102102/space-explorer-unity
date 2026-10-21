@@ -49,7 +49,9 @@ public sealed class GameManager : MonoBehaviour
         if (IsGameOver)
             return;
 
-        CurrentScore = Mathf.Max(0, CurrentScore + amount);
+        // Cho phép điểm âm nếu va chạm xảy ra khi điểm đang bằng 0,
+        // để hình phạt -10 luôn có hiệu lực đúng theo luật chơi.
+        CurrentScore += amount;
         RefreshHud();
     }
 
