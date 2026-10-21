@@ -589,9 +589,10 @@ public static class SpaceExplorerProjectSetup
         EditorSceneManager.SaveScene(scene, EndScenePath);
     }
 
-    private static void CreateCameraAndBackground(Sprite background)
+    private static void CreateCameraAndBackground(Sprite background, string backgroundName)
     {
-        GameObject cameraObject = new GameObject("Main Camera");
+        // Dùng tên riêng cho từng scene để Hierarchy rõ ràng khi trình bày bài thực hành.
+        GameObject cameraObject = new GameObject("Main Camera - " + backgroundName);
         cameraObject.tag = "MainCamera";
         cameraObject.transform.position = new Vector3(0f, 0f, -10f);
         Camera camera = cameraObject.AddComponent<Camera>();
@@ -601,7 +602,7 @@ public static class SpaceExplorerProjectSetup
         camera.backgroundColor = new Color(0.02f, 0.025f, 0.08f);
         cameraObject.AddComponent<AudioListener>();
 
-        GameObject backgroundObject = new GameObject("Space Background");
+        GameObject backgroundObject = new GameObject(backgroundName);
         backgroundObject.transform.position = new Vector3(0f, 0f, 5f);
         SpriteRenderer renderer = backgroundObject.AddComponent<SpriteRenderer>();
         renderer.sprite = background;
