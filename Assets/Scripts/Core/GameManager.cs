@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Quản lý điểm số và luồng kết thúc màn chơi.
@@ -79,8 +78,7 @@ public sealed class GameManager : MonoBehaviour
         // Dùng thời gian thực để chuyển cảnh vẫn hoạt động khi tạm dừng vật lý.
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(endScreenDelay);
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("EndGame");
+        SceneTransition.LoadScene("EndGame");
     }
 
     private void RefreshHud()
@@ -91,14 +89,12 @@ public sealed class GameManager : MonoBehaviour
 
     public static void StartNewGame()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("Gameplay");
+        SceneTransition.LoadScene("Gameplay");
     }
 
     public static void ReturnToMenu()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneTransition.LoadScene("MainMenu");
     }
 
     public static void QuitGame()
