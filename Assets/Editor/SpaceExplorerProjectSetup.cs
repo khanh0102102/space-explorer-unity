@@ -36,6 +36,9 @@ public static class SpaceExplorerProjectSetup
     [MenuItem("Tools/Space Explorer/Tạo toàn bộ dự án")]
     public static void SetupAll()
     {
+        if (!ConfirmRegenerationIfNeeded())
+            return;
+
         try
         {
             EnsureFolders();
@@ -96,6 +99,40 @@ public static class SpaceExplorerProjectSetup
     public static void OpenGameplayScene()
     {
         OpenSceneOrWarn(GameplayScenePath);
+    }
+
+    private static bool ConfirmRegenerationIfNeeded()
+    {
+        string[] generatedPaths =
+        {
+            MenuScenePath,
+            GameplayScenePath,
+            EndScenePath,
+            LaserPrefabPath,
+            AsteroidPrefabPath,
+            StarPrefabPath,
+            PlayerPrefabPath
+        };
+
+        bool hasGeneratedContent = false;
+        foreach (string path in generatedPaths)
+        {
+            if (File.Exists(AbsoluteProjectPath(path)))
+            {
+                hasGeneratedContent = true;
+                break;
+            }
+        }
+
+        if (!hasGeneratedContent)
+            return true;
+
+        return EditorUtility.DisplayDialog(
+            "Tạo lại Space Explorer?",
+            "Scene/prefab đã tồn tại. Tạo lại sẽ ghi đè các scene và prefab do công cụ tạo. " +
+            "Hãy hủy nếu bạn đã chỉnh sửa thủ công và chưa sao lưu.",
+            "Tạo lại",
+            "Hủy");
     }
 
     private static void OpenSceneOrWarn(string path)
@@ -499,7 +536,7 @@ public static class SpaceExplorerProjectSetup
 
         Canvas canvas = CreateCanvas("Canvas - HUD");
         Transform root = canvas.transform;
-        GameObject topBar = CreateStretchedPanel(root, "HUD - Top Bar", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(0f, 104f), new Color(0.015f, 0.025f, 0.08f, 0.86f));
+        CreateStretchedPanel(root, "HUD - Top Bar", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(0f, 104f), new Color(0.015f, 0.025f, 0.08f, 0.86f));
         CreateText(root, "Score Text", "ĐIỂM: 0", 30, new Vector2(-735f, 478f), new Vector2(500f, 58f), TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.35f), FontStyle.Bold);
         CreateText(root, "Control Guide", "MŨI TÊN / WASD: DI CHUYỂN     •     SPACE: BẮN", 20, new Vector2(420f, 478f), new Vector2(1000f, 58f), TextAnchor.MiddleRight, new Color(0.78f, 0.87f, 1f), FontStyle.Bold);
         CreateText(root, "Gameplay Hint", "THU THẬP SAO  •  NÉ THIÊN THẠCH", 19, new Vector2(0f, -495f), new Vector2(820f, 42f), TextAnchor.MiddleCenter, new Color(0.65f, 0.77f, 0.93f), FontStyle.Bold);
