@@ -27,6 +27,12 @@ public static class SpaceExplorerProjectSetup
     private const string StarPrefabPath = PrefabRoot + "/Star.prefab";
     private const string PlayerPrefabPath = PrefabRoot + "/PlayerShip.prefab";
 
+    private static string AbsoluteProjectPath(string relativePath)
+    {
+        string projectRoot = Directory.GetParent(Application.dataPath).FullName;
+        return Path.Combine(projectRoot, relativePath.Replace('/', Path.DirectorySeparatorChar));
+    }
+
     [MenuItem("Tools/Space Explorer/Tạo toàn bộ dự án")]
     public static void SetupAll()
     {
@@ -94,7 +100,7 @@ public static class SpaceExplorerProjectSetup
 
     private static void OpenSceneOrWarn(string path)
     {
-        if (!File.Exists(path))
+        if (!File.Exists(AbsoluteProjectPath(path)))
         {
             EditorUtility.DisplayDialog("Chưa có scene", "Hãy chạy Tools > Space Explorer > Tạo toàn bộ dự án trước.", "Đóng");
             return;
@@ -105,11 +111,11 @@ public static class SpaceExplorerProjectSetup
 
     private static void EnsureFolders()
     {
-        Directory.CreateDirectory(ArtRoot);
-        Directory.CreateDirectory(GeneratedRoot);
-        Directory.CreateDirectory(PrefabRoot);
-        Directory.CreateDirectory(SceneRoot);
-        Directory.CreateDirectory("Assets/Scripts");
+        Directory.CreateDirectory(AbsoluteProjectPath(ArtRoot));
+        Directory.CreateDirectory(AbsoluteProjectPath(GeneratedRoot));
+        Directory.CreateDirectory(AbsoluteProjectPath(PrefabRoot));
+        Directory.CreateDirectory(AbsoluteProjectPath(SceneRoot));
+        Directory.CreateDirectory(AbsoluteProjectPath("Assets/Scripts"));
         AssetDatabase.Refresh();
     }
 
@@ -129,13 +135,13 @@ public static class SpaceExplorerProjectSetup
         foreach (string folder in folders)
         {
             string source = Path.Combine(downloadedAssetRoot, folder);
-            string destination = Path.Combine(ArtRoot, folder);
+            string destination = AbsoluteProjectPath(Path.Combine(ArtRoot, folder));
             if (Directory.Exists(source))
                 CopyDirectory(source, destination);
         }
 
         string sourceLicense = Path.Combine(downloadedAssetRoot, "license.txt");
-        string destinationLicense = Path.Combine(ArtRoot, "license.txt");
+        string destinationLicense = AbsoluteProjectPath(Path.Combine(ArtRoot, "license.txt"));
         if (File.Exists(sourceLicense))
             File.Copy(sourceLicense, destinationLicense, true);
 
@@ -224,7 +230,7 @@ public static class SpaceExplorerProjectSetup
     private static Sprite EnsureFallbackSprite(string name)
     {
         string path = GeneratedRoot + "/" + name + ".png";
-        string absolutePath = Path.GetFullPath(path);
+        string absolutePath = AbsoluteProjectPath(path);
         Directory.CreateDirectory(Path.GetDirectoryName(absolutePath));
 
         if (!File.Exists(absolutePath))
@@ -435,7 +441,7 @@ public static class SpaceExplorerProjectSetup
     {
         string directory = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(directory))
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(AbsoluteProjectPath(directory));
         AssetDatabase.DeleteAsset(path);
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, path);
         return prefab;
