@@ -46,7 +46,10 @@ public static class SpaceExplorerProjectSetup
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             ImportKenneySprites();
 
-            Sprite background = LoadKenneyOrFallback("Backgrounds/darkPurple.png", "FallbackBackground");
+            // Mỗi scene có màu nền riêng để luồng Menu → Gameplay → End Game dễ nhận biết.
+            Sprite menuBackground = LoadKenneyOrFallback("Backgrounds/blue.png", "FallbackBackground");
+            Sprite gameplayBackground = LoadKenneyOrFallback("Backgrounds/darkPurple.png", "FallbackBackground");
+            Sprite endBackground = LoadKenneyOrFallback("Backgrounds/purple.png", "FallbackBackground");
             Sprite ship = LoadKenneyOrFallback("PNG/playerShip1_blue.png", "FallbackShip");
             Sprite asteroid = LoadKenneyOrFallback("PNG/Meteors/meteorBrown_big1.png", "FallbackAsteroid");
             Sprite star = LoadKenneyOrFallback("PNG/Power-ups/star_gold.png", "FallbackStar");
@@ -61,9 +64,9 @@ public static class SpaceExplorerProjectSetup
             GameObject starPrefab = BuildStarPrefab(star, collectSound);
             GameObject playerPrefab = BuildPlayerPrefab(ship, laserPrefab, laserSound);
 
-            BuildMenuScene(background);
-            BuildGameplayScene(background, playerPrefab, asteroidPrefab, starPrefab, loseSound);
-            BuildEndScene(background);
+            BuildMenuScene(menuBackground);
+            BuildGameplayScene(gameplayBackground, playerPrefab, asteroidPrefab, starPrefab, loseSound);
+            BuildEndScene(endBackground);
             EditorBuildSettings.scenes = new[]
             {
                 new EditorBuildSettingsScene(MenuScenePath, true),
@@ -388,7 +391,8 @@ public static class SpaceExplorerProjectSetup
 
         BoxCollider2D collider = go.AddComponent<BoxCollider2D>();
         collider.isTrigger = true;
-        collider.size = new Vector2(0.7f, 0.9f);
+        // Khớp hitbox với kích thước sprite Kenney thực tế, tránh bắn trúng khi tia còn cách xa.
+        collider.size = renderer.sprite != null ? renderer.sprite.bounds.size : new Vector2(0.2f, 0.7f);
         Rigidbody2D body = go.AddComponent<Rigidbody2D>();
         body.gravityScale = 0f;
         body.bodyType = RigidbodyType2D.Kinematic;
