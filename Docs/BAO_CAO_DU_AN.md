@@ -8,7 +8,8 @@ Space Explorer là trò chơi phi thuyền 2D thực hành những khái niệm 
 
 | Thành phần | Trách nhiệm |
 |---|---|
-| GameManager | Giữ điểm lượt chơi, cập nhật HUD, xử lý va chạm kết thúc, lưu điểm cuối/kỷ lục và điều hướng scene |
+| GameManager | Giữ điểm lượt chơi, cập nhật HUD, xử lý va chạm kết thúc và lưu điểm cuối/kỷ lục | 
+| SceneTransition | Làm mờ dần màn hình trước/sau khi tải scene; dùng thời gian thực để vẫn chạy được khi game tạm dừng |
 | PlayerController | Đọc phím mũi tên/WASD, giới hạn tàu trong màn hình và bắn laser theo thời gian hồi |
 | SpawnManager | Sinh các prefab thiên thạch/sao tại tọa độ ngẫu nhiên trong camera |
 | AsteroidMotion | Chọn hướng/tốc độ/góc xoay ngẫu nhiên, di chuyển và quấn về mép bên kia màn hình |
