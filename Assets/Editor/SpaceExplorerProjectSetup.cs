@@ -33,6 +33,7 @@ public static class SpaceExplorerProjectSetup
         try
         {
             EnsureFolders();
+            CopyKenneyAssetsFromLocalDownload();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             ImportKenneySprites();
 
@@ -110,6 +111,52 @@ public static class SpaceExplorerProjectSetup
         Directory.CreateDirectory(SceneRoot);
         Directory.CreateDirectory("Assets/Scripts");
         AssetDatabase.Refresh();
+    }
+
+    private static void CopyKenneyAssetsFromLocalDownload()
+    {
+        // Đường dẫn đúng theo máy của người làm bài. Nếu chạy trên máy khác,
+        // tool sẽ bỏ qua bước này và dùng asset đã chép thủ công hoặc hình dự phòng.
+        const string downloadedAssetRoot = @"C:\Users\hodac\Downloads\kenney_space-shooter-remastered";
+        if (!Directory.Exists(downloadedAssetRoot))
+        {
+            Debug.Log("Không tìm thấy thư mục Kenney tại " + downloadedAssetRoot +
+                      ". Nếu cần, chép Backgrounds, PNG, Bonus và license.txt vào " + ArtRoot + ".");
+            return;
+        }
+
+        string[] folders = { "Backgrounds", "PNG", "Bonus" };
+        foreach (string folder in folders)
+        {
+            string source = Path.Combine(downloadedAssetRoot, folder);
+            string destination = Path.Combine(ArtRoot, folder);
+            if (Directory.Exists(source))
+                CopyDirectory(source, destination);
+        }
+
+        string sourceLicense = Path.Combine(downloadedAssetRoot, "license.txt");
+        string destinationLicense = Path.Combine(ArtRoot, "license.txt");
+        if (File.Exists(sourceLicense))
+            File.Copy(sourceLicense, destinationLicense, true);
+
+        Debug.Log("Đã sao chép asset Kenney từ thư mục Downloads vào " + ArtRoot + ".");
+    }
+
+    private static void CopyDirectory(string sourceDirectory, string destinationDirectory)
+    {
+        Directory.CreateDirectory(destinationDirectory);
+
+        foreach (string sourceFile in Directory.GetFiles(sourceDirectory))
+        {
+            string destinationFile = Path.Combine(destinationDirectory, Path.GetFileName(sourceFile));
+            File.Copy(sourceFile, destinationFile, true);
+        }
+
+        foreach (string sourceSubdirectory in Directory.GetDirectories(sourceDirectory))
+        {
+            string destinationSubdirectory = Path.Combine(destinationDirectory, Path.GetFileName(sourceSubdirectory));
+            CopyDirectory(sourceSubdirectory, destinationSubdirectory);
+        }
     }
 
     private static void ImportKenneySprites()
