@@ -24,9 +24,9 @@ Các script gameplay dùng component và collider thay vì kiểm tra tọa đ�
 
 ## 3. Scene và luồng trò chơi
 
-1. MainMenu: tên game, nút Bắt đầu, Hướng dẫn và Thoát.
-2. Gameplay: nền không gian, tàu người chơi, HUD điểm, SpawnManager, thiên thạch và sao.
-3. EndGame: điểm cuối, kỷ lục, Chơi lại, Về menu chính và Thoát.
+1. MainMenu: nền xanh không gian, tên game, nút Bắt đầu, Hướng dẫn và Thoát.
+2. Gameplay: nền tím đậm, tàu người chơi, HUD điểm, SpawnManager, thiên thạch và sao.
+3. EndGame: nền tím, điểm cuối, kỷ lục, Chơi lại, Về menu chính và Thoát.
 
 Luồng bình thường là MainMenu → Gameplay → EndGame. Chọn Chơi lại sẽ tải Gameplay; chọn Về menu chính sẽ tải MainMenu.
 
@@ -42,7 +42,9 @@ Luồng bình thường là MainMenu → Gameplay → EndGame. Chọn Chơi lạ
 ## 5. Asset
 
 Dự án dự kiến sử dụng Kenney Space Shooter Remastered:
-- Nền: Backgrounds/darkPurple.png.
+- Nền menu: Backgrounds/blue.png.
+- Nền Gameplay: Backgrounds/darkPurple.png.
+- Nền End Game: Backgrounds/purple.png.
 - Tàu: PNG/playerShip1_blue.png.
 - Thiên thạch: PNG/Meteors/meteorBrown_big1.png.
 - Sao: PNG/Power-ups/star_gold.png.
@@ -56,7 +58,7 @@ Sao chép thư mục Backgrounds, PNG, Bonus cùng license.txt vào Assets/Art/K
 - Tàu: Rigidbody2D không chịu trọng lực, CircleCollider2D dạng trigger.
 - Thiên thạch: CircleCollider2D dạng trigger; va chạm được xử lý trong AsteroidMotion.
 - Sao: CircleCollider2D dạng trigger; xử lý trong StarCollectible.
-- Laser: BoxCollider2D dạng trigger và Rigidbody2D kinematic; xử lý trong LaserProjectile.
+- Laser: BoxCollider2D dạng trigger, kích thước hitbox lấy theo kích thước sprite Kenney và Rigidbody2D kinematic; xử lý trong LaserProjectile.
 
 Trigger phù hợp với trò chơi arcade để phát hiện va chạm mà không đẩy tàu/thiên thạch theo lực vật lý.
 
