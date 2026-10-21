@@ -451,6 +451,7 @@ public static class SpaceExplorerProjectSetup
     {
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         CreateCameraAndBackground(background, "Main Menu Background");
+        CreateTransitionSystem();
         Canvas canvas = CreateCanvas("Canvas - Menu chinh");
         Transform root = canvas.transform;
 
@@ -490,6 +491,7 @@ public static class SpaceExplorerProjectSetup
     {
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         CreateCameraAndBackground(background, "Gameplay Background");
+        CreateTransitionSystem();
 
         GameObject player = PrefabUtility.InstantiatePrefab(playerPrefab) as GameObject;
         if (player != null)
@@ -527,6 +529,7 @@ public static class SpaceExplorerProjectSetup
     {
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         CreateCameraAndBackground(background, "End Game Background");
+        CreateTransitionSystem();
         Canvas canvas = CreateCanvas("Canvas - End Game");
         Transform root = canvas.transform;
 
@@ -575,6 +578,50 @@ public static class SpaceExplorerProjectSetup
                 backgroundObject.transform.localScale = new Vector3(18.5f / size.x, 10.15f / size.y, 1f);
             }
         }
+    }
+
+    private static void CreateTransitionSystem()
+    {
+        GameObject transitionRoot = new GameObject("SceneTransition");
+        SceneTransition transition = transitionRoot.AddComponent<SceneTransition>();
+
+        GameObject canvasObject = new GameObject(
+            "Transition Canvas",
+            typeof(RectTransform),
+            typeof(Canvas),
+            typeof(CanvasScaler),
+            typeof(GraphicRaycaster));
+        canvasObject.transform.SetParent(transitionRoot.transform, false);
+
+        Canvas canvas = canvasObject.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = 1000;
+
+        CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.matchWidthOrHeight = 0.5f;
+
+        GameObject overlay = new GameObject("Fade Overlay", typeof(RectTransform), typeof(Image), typeof(CanvasGroup));
+        overlay.transform.SetParent(canvasObject.transform, false);
+        RectTransform rect = overlay.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.pivot = new Vector2(0.5f, 0.5f);
+
+        Image image = overlay.GetComponent<Image>();
+        image.color = Color.black;
+        image.raycastTarget = true;
+        CanvasGroup group = overlay.GetComponent<CanvasGroup>();
+        group.alpha = 0f;
+        group.blocksRaycasts = false;
+        group.interactable = false;
+
+        SetObjectReference(transition, "fadeGroup", group);
+        SetFloat(transition, "fadeDuration", 0.4f);
     }
 
     private static Canvas CreateCanvas(string name)
