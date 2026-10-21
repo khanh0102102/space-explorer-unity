@@ -541,7 +541,7 @@ public static class SpaceExplorerProjectSetup
         Canvas canvas = CreateCanvas("Canvas - HUD");
         Transform root = canvas.transform;
         CreateStretchedPanel(root, "HUD - Top Bar", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(0f, 104f), new Color(0.015f, 0.025f, 0.08f, 0.86f));
-        CreateText(root, "Score Text", "ĐIỂM: 0", 30, new Vector2(-735f, 478f), new Vector2(500f, 58f), TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.35f), FontStyle.Bold);
+        CreateText(root, "Score Text", "ĐIỂM: 0", 30, new Vector2(-680f, 478f), new Vector2(500f, 58f), TextAnchor.MiddleLeft, new Color(1f, 0.85f, 0.35f), FontStyle.Bold);
         CreateText(root, "Control Guide", "MŨI TÊN / WASD: DI CHUYỂN     •     SPACE: BẮN", 20, new Vector2(420f, 478f), new Vector2(1000f, 58f), TextAnchor.MiddleRight, new Color(0.78f, 0.87f, 1f), FontStyle.Bold);
         CreateText(root, "Gameplay Hint", "THU THẬP SAO  •  NÉ THIÊN THẠCH", 19, new Vector2(0f, -495f), new Vector2(820f, 42f), TextAnchor.MiddleCenter, new Color(0.65f, 0.77f, 0.93f), FontStyle.Bold);
 
